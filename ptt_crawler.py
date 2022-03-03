@@ -41,7 +41,7 @@ lastpage = int(re.search("index(.+)\.html", last2nd_url).group(1)) + 1
 
 all_post = []
 
-for i in range(lastpage-180 , lastpage - 210, -1):  # 210
+for i in range(lastpage -180 , lastpage - 210, -1):  # 210
     logger.debug("Started: {}".format(i))
 
     url = "https://www.ptt.cc/bbs/movie/index{}.html".format(i)
