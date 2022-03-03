@@ -1,0 +1,6 @@
+.env
+movies.db
+log.txt
+log_3.txt
+log_5.txt
+test_sql.py

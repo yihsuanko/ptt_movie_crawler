@@ -11,6 +11,7 @@ from pydantic import BaseModel
 from models import Movie
 from sqlalchemy.orm import Session
 from typing import Optional
+from fastapi.staticfiles import StaticFiles
 
 
 models.Base.metadata.create_all(bind=engine)
@@ -30,60 +31,58 @@ def get_db():
         db.close()
 
 @app.get("/") # 指定 api 路徑 (get方法)
-def home(request: Request, date = None, title = None, author = None, comment = None, limit: int = 10,skip: int =0, page_num: int = 1, db: Session = Depends(get_db)):
+def home(request: Request, date = "", title = "", author = "", comment = "", limit: int = 50, page_num: int = 1, db: Session = Depends(get_db)):
     """
     display the movie creener dashboard / homepage
     """
-
     conn = sqlite3.connect('movies.db')  #建立資料庫
     cursor = conn.cursor()
     data_length = len(pd.read_sql("SELECT * FROM movies", conn))
-    # date_length = ptt_crawler.data_length
-    start = (page_num - 1) * limit
-    end = start + limit
-    skip = end
 
-    # movies= db.query(Movie)
-    movies = db.query(models.Movie).offset(skip).limit(limit)
+    # date_length = ptt_crawler.data_length
+    movies= db.query(Movie)
+    # if title != "":
+    #     movies = movies.filter(title in Movie.title)
+
+    if author != "":
+        movies = movies.filter(Movie.author == author)
+    
+    if comment != "":
+        movies = movies.filter(Movie.comment > comment)
+
+    skip = (page_num - 1) * limit
+    data_length = movies.offset(skip).count()
+    print(data_length)
+    movies = movies.offset(skip).limit(limit)
 
     response = {
         "request": request, 
         "movies": movies, 
-        "title": title,
-        "author": author,
-        "date": date,
-        "comment": comment,
+        "page_num": page_num,
         "pagination":{}
     }
-    
+
+    start = (page_num - 1) * limit
+    end = start + limit
     if end >= data_length:
         response["pagination"]["next"] = None
 
         if page_num > 1:
-            response["pagination"]["previous"] = f"?page_num={page_num-1}"
+            response["pagination"]["previous"] = f"?page_num={page_num-1}&author={author}&date={date}&comment={comment}"
         else:
             response["pagination"]["previous"] = None
     else:
         if page_num > 1:
-            response["pagination"]["previous"] = f"?page_num={page_num-1}"
+            response["pagination"]["previous"] = f"?page_num={page_num-1}&author={author}&date={date}&comment={comment}"
         else:
             response["pagination"]["previous"] = None
 
-        response["pagination"]["next"] = f"?page_num={page_num+1}"
-
-    if date:
-        movies = movies.filter(Movie.date < date)
-
-    if author:
-        movies = movies.filter(Movie.author == author)
-    
-    if comment:
-        movies = movies.filter(Movie.comment > comment)
+        response["pagination"]["next"] = f"?page_num={page_num+1}&author={author}&date={date}&comment={comment}"
     
     # if ma200:
     #     movie = movie.filter(Movie.price > Movie.ma200)
     
-    movies = movies.all()
+    # movies = movies.all()
 
     return templates.TemplateResponse("home.html", response)
 
@@ -111,6 +110,15 @@ def create_movie(movie_request: MovieRequest, background_tasks: BackgroundTasks,
     db.commit()
 
     # background_tasks.add_task(fetch_movie_data, movie.id)
+
+    return{
+        "code":"success",
+        "message": "movie created"
+    }
+
+@app.get("/statistics")  # post get
+def statistics(request: Request, db: Session = Depends(get_db)):
+
 
     return{
         "code":"success",
