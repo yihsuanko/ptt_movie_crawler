@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<form method="get">
+    <div class="ui input">
+        <input name="author" type="text" placeholder="Author" value="{{ author or '' }}">
+    </div>
+
+    <div class="ui input">
+        <input name="date" type="text" placeholder="Date" value="{{ date or '' }}">
+    </div>
+
+    <div class="ui input">
+        <input name="comment" type="text" placeholder="Comment" value="{{ comment or '' }}">
+    </div>
+
+    <div class="ui checkbox">
+        <input type="checkbox" name="example">
+        <label>好負雷</label>
+    </div>
+
+    <button class="ui button primary">
+        Search
+    </button>
+</form>
+
+<table class="ui celled table">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Comment</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for movie in movies %}
+      <tr>
+        <td>{{ movie.date }}</td>
+        <td>{{ movie.title }}</td>
+        <td>{{ movie.author }}</td>
+        <td>{{ movie.comment }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+{% if pagination.previous == None %}
+
+{% else %}
+    <button class="ui button blue">
+        <a style="color:white" href="{{pagination.previous}}">&laquo; Previous</a>
+    </button>
+{%endif%}
+
+{% if pagination.next == None %}
+
+{% else %}
+    <button class="ui button blue">
+        <a style="color:white" href="{{pagination.next}}">Next &raquo;</a>
+    </button>
+{%endif%}
+
+
+
+{% endblock %}
