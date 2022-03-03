@@ -1,6 +1,7 @@
 .env
 movies.db
+movies_save.db
 log.txt
 log_3.txt
 log_5.txt
-test_sql.py
+sql_test.py
