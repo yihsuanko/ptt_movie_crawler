@@ -81,7 +81,7 @@ def statistics(request: Request, db: Session = Depends(get_db)):
 ```
 
 ## 5. HTML 美化
-好用的 UI 網站 - Semantic UI : https://semantic-ui.com/
+好用的 UI 網站 - Semantic UI : https://semantic-ui.com/ <br/>
 layout.html 建立
 ```HTML
     <html>
