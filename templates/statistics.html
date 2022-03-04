@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<style>
+    .label{
+        font-size: 1.5rm;
+    }
+</style>
+<div style="margin-top: 100px;" class="ui four statistics">
+    <div class="statistic">
+      <div class="value">
+        <i class="comments icon"></i>  {{data_length}}
+      </div>
+      <div style="margin-top: 10px; font-size: 1.5em;" class="label">
+        筆資料
+      </div>
+    </div>
+    <div class="statistic">
+      <div class="value">
+        <i class="user plus icon"></i>  {{author_num}}
+      </div>
+      <div style="margin-top: 10px; font-size: 1.5em;" class="label">
+        個作者
+      </div>
+    </div>
+    <div class="statistic">
+      <div class="value">
+        <a style="color: black;"href="/?title=%5B好雷%5D+&author=&comment=&date=&limit=50"><i class="thumbs up icon"></i>   {{good_num}}</a>
+      </div>
+      <div style="margin-top: 10px; font-size: 1.5em;" class="label">
+        好雷數
+      </div>
+    </div>
+    <div class="statistic">
+      <div class="value">
+        <a style="color: black;"href="/?title=%5B負雷%5D+&author=&comment=&date=&limit=50"><i class="thumbs down icon"></i>  {{bad_num}}</a>
+      </div>
+      <div style="margin-top: 10px; font-size: 1.5em;" class="label">
+        負雷數
+      </div>
+    </div>
+</div>
+<div style="  display: block; margin-left: auto; margin-right: auto; width: 50%;margin-top: 50px;">
+  <img src={{ url_for('static',path='/movie.jpg') }} style="width: 600px;height: 400px">
+  <br>
+  Photo by Jon Tyson on Unsplash
+</div>
+
+
+<button style="margin-top: 30px" class="ui button blue">
+    <a style="color:white" href="/">Home</a>
+</button>
+
+{% endblock %}

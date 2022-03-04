@@ -1,22 +1,37 @@
 {% extends "layout.html" %}
 
 {% block content %}
+
 <form method="get">
+
     <div class="ui input">
-        <input name="author" type="text" placeholder="Author" value="{{ author or '' }}">
+        <input name="title" type="text" placeholder="標題" value="{{ title or '' }}">
+    </div>
+    
+    <div class="ui input">
+        <input name="author" type="text" placeholder="作者" value="{{ author or '' }}">
     </div>
 
-    <!-- <div class="ui input">
-        <input name="title" type="text" placeholder="Title" value="{{ title or '' }}">
-    </div> -->
+    <div class="ui input">
+        <input name="comment" type="text" placeholder="最低評論數" value="{{ comment or '' }}">
+    </div>
 
     <div class="ui input">
-        <input name="comment" type="text" placeholder="Comment" value="{{ comment or '' }}">
+        <input name="date" type="text" placeholder="日期" value="{{ date or '' }}">
+    </div>
+
+    <div class="ui input">
+        <input name="limit" type="text" placeholder="顯示筆數" value="{{ limit or 50 }}">
     </div>
 
     <!-- <div class="ui checkbox">
         <input type="checkbox" name="example">
-        <label>好負雷</label>
+        <label>好雷</label>
+    </div>
+
+    <div class="ui checkbox">
+        <input type="checkbox" name="example">
+        <label>負雷</label>
     </div> -->
 
     <button class="ui button primary">
@@ -27,10 +42,10 @@
 <table class="ui celled table">
     <thead>
       <tr>
-        <th>Date</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Comment</th>
+        <th>日期</th>
+        <th>標題</th>
+        <th>作者</th>
+        <th>評論數</th>
       </tr>
     </thead>
     <tbody>
@@ -60,6 +75,10 @@
         <a style="color:white" href="{{pagination.next}}">Next &raquo;</a>
     </button>
 {%endif%}
+
+<button style="margin-left: 50px" class="ui button blue">
+    <a style="color:white" href="/statistics">Statistics</a>
+</button>
 
 
 
