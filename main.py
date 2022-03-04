@@ -1,6 +1,6 @@
 from datetime import datetime
 import models
-# import ptt_crawler
+import ptt_crawler
 import pandas as pd
 import sqlite3
 from re import template
@@ -96,23 +96,23 @@ def home(request: Request , date = "", title = "", author = "", comment = "", li
 
     return templates.TemplateResponse("home.html", response)
 
-@app.post("/movie")  # post get
-def create_movie(movie_request: MovieRequest, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
-    """
-    create movie data and store it in the database
-    """
-    movie = Movie()
-    movie.title = movie_request.title
+# @app.post("/movie")
+# def create_movie(movie_request: MovieRequest, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
+#     """
+#     create movie data and store it in the database
+#     """
+#     movie = Movie()
+#     movie.title = movie_request.title
 
-    db.add(movie)
-    db.commit()
+#     db.add(movie)
+#     db.commit()
 
-    # background_tasks.add_task(fetch_movie_data, movie.id)
+#     # background_tasks.add_task(fetch_movie_data, movie.id)
 
-    return{
-        "code":"success",
-        "message": "movie created"
-    }
+#     return{
+#         "code":"success",
+#         "message": "movie created"
+#     }
 
 @app.get("/statistics")  # post get
 def statistics(request: Request, db: Session = Depends(get_db)):

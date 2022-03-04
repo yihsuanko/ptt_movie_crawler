@@ -45,13 +45,12 @@ for i in range(lastpage -180 , lastpage - 210, -1):  # 210
     logger.debug("Started: {}".format(i))
 
     url = "https://www.ptt.cc/bbs/movie/index{}.html".format(i)
-
-    # response = requests.get(url, timeout=(2, 3))
-
     rs = requests.session()
     res = rs.post("https://www.ptt.cc/ask/over18", data=payload)  # 繞過18禁
     res = rs.get(url, timeout=(2, 3))
     soup = BeautifulSoup(res.text, "html.parser")
+
+    
     for entry in soup.select(".r-ent"):
         title = entry.select(".title")[0].text
         author = entry.select(".author")[0].text
