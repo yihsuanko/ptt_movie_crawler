@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import sqlite3
 import logging
+import datetime
 
 # 設定logging
 logger = logging.getLogger()  # 設置root logger
@@ -13,7 +14,7 @@ formatter = logging.Formatter(
     datefmt='%Y-%m-%d %H:%M:%S')
 
 # 使用FileHandler輸出到file
-fh = logging.FileHandler('log_6.txt')
+fh = logging.FileHandler('log_movies.txt')
 fh.setLevel(logging.DEBUG)
 fh.setFormatter(formatter)
 
@@ -41,7 +42,7 @@ lastpage = int(re.search("index(.+)\.html", last2nd_url).group(1)) + 1
 
 all_post = []
 
-for i in range(lastpage -180 , lastpage - 210, -1):  # 210
+for i in range(lastpage , lastpage - 4, -1):  # 210
     logger.debug("Started: {}".format(i))
 
     url = "https://www.ptt.cc/bbs/movie/index{}.html".format(i)
@@ -54,11 +55,11 @@ for i in range(lastpage -180 , lastpage - 210, -1):  # 210
     for entry in soup.select(".r-ent"):
         title = entry.select(".title")[0].text
         author = entry.select(".author")[0].text
-        date = entry.select(".date")[0].text
+        # date = entry.select(".date")[0].text
         try:
             link = pre + entry.find(class_="title").a["href"]
             all_post.append(
-                {"author": author, "link": link, "title": title.strip(), "date": date}
+                {"author": author, "link": link, "title": title.strip()} #, "date": date}
             )
         except:
             # print("The link has been removed")
@@ -66,6 +67,9 @@ for i in range(lastpage -180 , lastpage - 210, -1):  # 210
 
 logger.debug("Finished")
 
+monthtonum = {
+    "Jan":1, "Feb":2, "Mar":3, "Apr":4, "May":5, "Jun":6, "Jul":7, "Aug":8, "Sep":9, "Oct":10, "Nov":11, "Dec":12
+}
 
 def crawler(url):
     logger.debug("Started: {}".format(url))
@@ -76,18 +80,32 @@ def crawler(url):
     res = rs.get(url, timeout=(2, 3))
     soup = BeautifulSoup(res.text, "html.parser")
     push = len(soup.select(".push"))
+    if len(soup.select(".article-meta-value")) < 4:
+        date = date_temp
+    else:
+        date = soup.select(".article-meta-value")[3].text
+        date_container = date.split(" ")
+        while '' in date_container:
+            date_container.remove('')
+
+        dts = date_container[4] + str(monthtonum[date_container[1]]) + date_container[2] + date_container[3]
+        date = datetime.datetime.strptime(dts,"%Y%m%d%H:%M:%S")
 
     logger.debug("Finished")
 
-    return push
+    return date, push
 
 
 # all_post = pd.read_csv('all_post.csv')
 df = pd.DataFrame(all_post)
 comment = []
+date = []
 for i in df["link"]:
-    comment.append(crawler(i))
+    date_temp , comment_temp = crawler(i)
+    date.append(date_temp)
+    comment.append(comment_temp)
 
+df["date"] = date
 df["comment"] = comment
 
 conn = sqlite3.connect("movies.db")  # 建立資料庫

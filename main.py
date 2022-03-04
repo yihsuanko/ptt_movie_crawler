@@ -1,6 +1,6 @@
 from datetime import datetime
 import models
-import ptt_crawler
+# import ptt_crawler
 import pandas as pd
 import sqlite3
 from re import template
@@ -43,13 +43,15 @@ def home(request: Request , date = "", title = "", author = "", comment = "", li
     # date_length = ptt_crawler.data_length
     movies= db.query(Movie)
     if date != "":
-        date_m, date_d = date.split("/")
-        if len(date_m) == 1:
-            date_m = " {}".format(date_m)
-        if len(date_d) == 1:
-            date_d = "0{}".format(date_d)
-        date = date_m + "/" + date_d
-        movies = movies.filter(Movie.date == date)
+        movies = movies.filter(Movie.date.like("{}%".format(date)))
+    # if date != "":
+    #     date_m, date_d = date.split("/")
+    #     if len(date_m) == 1:
+    #         date_m = " {}".format(date_m)
+    #     if len(date_d) == 1:
+    #         date_d = "0{}".format(date_d)
+    #     date = date_m + "/" + date_d
+    #     movies = movies.filter(Movie.date == date)
     if author != "":
         movies = movies.filter(Movie.author == author)
     
@@ -61,12 +63,11 @@ def home(request: Request , date = "", title = "", author = "", comment = "", li
 
     skip = (page_num - 1) * limit
     data_length = movies.offset(skip).count()
-    # print(data_length)
     movies = movies.offset(skip).limit(limit)
 
     response = {
         "request": request, 
-        "movies": movies, 
+        "movies": movies,  
         "limit": limit,
         "page_num": page_num,
         "pagination":{}
@@ -88,11 +89,6 @@ def home(request: Request , date = "", title = "", author = "", comment = "", li
             response["pagination"]["previous"] = None
 
         response["pagination"]["next"] = f"?page_num={page_num+1}&author={author}&date={date}&comment={comment}&limit={limit}"
-    
-    # if ma200:
-    #     movie = movie.filter(Movie.price > Movie.ma200)
-    
-    # movies = movies.all()
 
     return templates.TemplateResponse("home.html", response)
 
