@@ -117,8 +117,8 @@ app.mount("/static", StaticFiles(directory="./static"), name="static")
 ```
 
 ## 6. 功能優化
-1. 計算擴充好雷數
+1. 計算好雷/負雷數(好為雷、超好雷...)
 2. 蝙蝠俠好雷還是負雷比較多
-3. 
+3. 日期按照先後順序排列
 
 正則表達式（Regular Expression, regex）
