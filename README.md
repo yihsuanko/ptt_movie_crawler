@@ -119,3 +119,6 @@ app.mount("/static", StaticFiles(directory="./static"), name="static")
 ## 6. 功能優化
 1. 計算擴充好雷數
 2. 蝙蝠俠好雷還是負雷比較多
+3. 
+
+正則表達式（Regular Expression, regex）
