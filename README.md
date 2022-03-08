@@ -115,3 +115,7 @@ layout.html 建立
 from fastapi.staticfiles import StaticFiles
 app.mount("/static", StaticFiles(directory="./static"), name="static")
 ```
+
+## 6. 功能優化
+1. 計算擴充好雷數
+2. 蝙蝠俠好雷還是負雷比較多
