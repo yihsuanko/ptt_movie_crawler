@@ -1,7 +1,10 @@
 .env
 movies.db
-movies_save.db
-movies_datetimes.db
+movies_with_type.db
 log_test.txt
 log_movies.txt
+log_movies2txt
+log_movies3.txt
+log_movies4.txt
+log_movies5.txt
 sql_test.py

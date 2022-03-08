@@ -17,22 +17,21 @@
     </div>
 
     <div class="ui input">
-        <input name="date" type="text" placeholder="日期" value="{{ date or '' }}">
+        <input name="date" type="text" placeholder="日期  YYYY-MM-DD" value="{{ date or '' }}">
     </div>
 
     <div class="ui input">
         <input name="limit" type="text" placeholder="顯示筆數" value="{{ limit or 50 }}">
     </div>
-
-    <!-- <div class="ui checkbox">
-        <input type="checkbox" name="example">
+    <div class="ui checkbox">
+        <input name="good_com" type="checkbox" {% if good_com %}checked="checked"{% endif %}>
         <label>好雷</label>
-    </div>
+      </div>
 
     <div class="ui checkbox">
-        <input type="checkbox" name="example">
+        <input name="bad_com" type="checkbox" {% if bad_com %}checked="checked"{% endif %}>
         <label>負雷</label>
-    </div> -->
+    </div>
 
     <button class="ui button primary">
         Search
@@ -46,6 +45,7 @@
         <th>標題</th>
         <th>作者</th>
         <th>評論數</th>
+        <!-- <th>好負雷</th> -->
       </tr>
     </thead>
     <tbody>
@@ -55,6 +55,7 @@
         <td>{{ movie.title }}</td>
         <td>{{ movie.author }}</td>
         <td>{{ movie.comment }}</td>
+        <!-- <td>{{ movie.movie_type }}</td> -->
       </tr>
       {% endfor %}
     </tbody>
@@ -78,6 +79,10 @@
 
 <button style="margin-left: 50px" class="ui button blue">
     <a style="color:white" href="/statistics">Statistics</a>
+</button>
+
+<button style="margin-left: 50px" class="ui button blue">
+    <a style="color:white" href="/batman">Batman</a>
 </button>
 
 
