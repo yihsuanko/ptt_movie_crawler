@@ -1,6 +1,7 @@
 # ptt_movie_crawler
 
 本專案將近三個月ptt電影版的標題、評論數爬下，並存入sqlite，透過fastapi來執行。
+使用方式，執行：uvicorn main:app --reload
 
 ## 1. 安裝需要的package
 ```
